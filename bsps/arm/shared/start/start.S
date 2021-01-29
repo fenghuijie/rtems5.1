@@ -181,6 +181,28 @@ _start:
 	mov	r13, #0
 #endif
 
+        /* invalidate tlb */
+        mov r0, #0
+        mcr p15, #0, r0, c8, c7, #0
+
+        /* clear mmu bit */
+        mrc p15, #0, r0, c1, c0, #0
+        bic r0, r0, #1
+        mcr p15, #0, r0, c1, c0, #0
+        dsb
+
+        /* I+BTB cache invalidate */
+        mov r0, #0
+        mcr p15, #0, r0, c7, c5, #0
+        dsb
+        isb
+
+        /* Icache/Dcache disable */
+        mrc p15, #0, r0, c1, c0, #0
+        bic r0, r0, #0x00000004
+        bic r0, r0, #0x00001000
+        mcr p15, #0, r0, c1, c0, #0
+
 #ifdef RTEMS_SMP
 	/* Read MPIDR and get current processor index */
 	mrc	p15, 0, r7, c0, c0, 5
