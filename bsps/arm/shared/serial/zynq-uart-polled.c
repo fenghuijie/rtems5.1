@@ -126,6 +126,10 @@ void zynq_uart_initialize(rtems_termios_device_context *base)
 
   zynq_cal_baud_rate(ZYNQ_UART_DEFAULT_BAUD, &brgr, &bauddiv, regs->mode);
 
+  /* force set uart baudrate for zynq7000 debug */
+  brgr = 0x7C;
+  bauddiv = 0x6;
+
   regs->control &= ~(ZYNQ_UART_CONTROL_RXEN | ZYNQ_UART_CONTROL_TXEN);
   regs->control = ZYNQ_UART_CONTROL_RXDIS
     | ZYNQ_UART_CONTROL_TXDIS
