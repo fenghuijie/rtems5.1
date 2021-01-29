@@ -26,7 +26,7 @@
 
 const char rtems_test_name[] = "SMPIPI 1";
 
-#define CPU_COUNT 32
+#define CPU_COUNT 2
 
 typedef struct {
   uint32_t value;
